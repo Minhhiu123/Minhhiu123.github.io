@@ -4,15 +4,36 @@ import fireworksBg from "@/assets/fireworks-bg.jpg";
 import { Heart, Music, Calendar, MapPin, StopCircle } from "lucide-react";
 
 const WeddingInvitation = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [audio] = useState(() => new Audio("/audio/wedding.mp3"));
 
   useEffect(() => {
     audio.loop = true;
+
+    // ✅ Cố gắng tự động phát nhạc khi trang load
+    const tryPlay = async () => {
+      try {
+        await audio.play();
+        console.log("🎵 Nhạc tự bật thành công!");
+      } catch (err) {
+        console.log("⚠️ Trình duyệt chặn autoplay, sẽ bật khi user click.");
+      }
+    };
+    tryPlay();
+
+    // ✅ Nếu bị chặn, bật khi user click lần đầu
+    const handleFirstInteraction = () => {
+      audio.play().catch(() => {});
+      document.removeEventListener("click", handleFirstInteraction);
+    };
+    document.addEventListener("click", handleFirstInteraction);
+
     return () => {
       audio.pause();
+      document.removeEventListener("click", handleFirstInteraction);
     };
   }, [audio]);
+
 
   const toggleMusic = () => {
     if (isPlaying) {

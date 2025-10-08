@@ -1,94 +1,233 @@
-import React, { useEffect, useState } from "react";
-import { Heart, Pause, Play } from "lucide-react";
+import { useEffect, useState } from "react";
 import couplePhoto from "@/assets/couple-photo.png";
 import fireworksBg from "@/assets/fireworks-bg.jpg";
+import { Heart, Music, Calendar, MapPin, StopCircle } from "lucide-react";
 
-const WeddingInvitation: React.FC = () => {
+const WeddingInvitation = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [audio] = useState(() => new Audio("/audio/wedding.mp3"));
 
   useEffect(() => {
     audio.loop = true;
-    audio.muted = true; // ✅ Bắt đầu ở chế độ im lặng
-
-    const tryPlay = async () => {
-      try {
-        await audio.play();
-        console.log("🎵 Phát nhạc im lặng thành công");
-
-        // ✅ Sau 1 giây thì bật âm thanh trở lại
-        setTimeout(() => {
-          audio.muted = false;
-          console.log("🔊 Bật âm thanh");
-        }, 1000);
-      } catch (err) {
-        console.log("⚠️ Trình duyệt chặn autoplay, sẽ bật khi user click");
-      }
-    };
-
-    tryPlay();
-
-    // ✅ Nếu vẫn bị chặn, bật khi user click lần đầu
-    const handleFirstInteraction = () => {
-      audio.muted = false;
-      audio.play().catch(() => {});
-      document.removeEventListener("click", handleFirstInteraction);
-    };
-    document.addEventListener("click", handleFirstInteraction);
-
     return () => {
       audio.pause();
-      document.removeEventListener("click", handleFirstInteraction);
     };
   }, [audio]);
 
-  const toggleAudio = () => {
+  const toggleMusic = () => {
     if (isPlaying) {
       audio.pause();
     } else {
-      audio.play().catch(() => {});
+      audio.play();
     }
     setIsPlaying(!isPlaying);
   };
 
-  return (
-    <div
-      className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center text-center"
-      style={{
-        backgroundImage: `url(${fireworksBg})`,
-      }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40"></div>
+  const stopMusic = () => {
+    audio.pause();
+    audio.currentTime = 0;
+    setIsPlaying(false);
+  };
 
-      {/* Nội dung */}
-      <div className="relative z-10 text-white p-4">
-        <h1 className="text-5xl font-bold mb-4 animate-pulse">
-          💍 Lễ Cưới Minh & Hồng 💖
-        </h1>
-        <img
-          src={couplePhoto}
-          alt="Couple"
-          className="w-64 h-64 object-cover rounded-full mx-auto border-4 border-pink-300 shadow-lg"
-        />
-        <p className="mt-4 text-lg">Trân trọng kính mời bạn đến dự ngày vui của chúng tôi</p>
-        <p className="text-2xl mt-2 font-semibold text-pink-200">20.10.2025</p>
+  const flowers = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    emoji: i % 8 === 0 ? "🌸" : i % 8 === 1 ? "🌺" : i % 8 === 2 ? "🌹" : i % 8 === 3 ? "🌼" : i % 8 === 4 ? "🌷" : i % 8 === 5 ? "🌻" : i % 8 === 6 ? "🍃" : "🌿",
+    delay: i * 0.2,
+    duration: 8 + (i % 4) * 2,
+    left: (i * 2) % 100,
+    size: i % 3 === 0 ? "text-3xl" : i % 3 === 1 ? "text-4xl" : "text-5xl",
+  }));
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Fireworks Background */}
+      <div
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${fireworksBg})`,
+          filter: "brightness(0.7)",
+        }}
+      />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
+
+      {/* Floating Flowers */}
+      {flowers.map((flower) => (
+        <div
+          key={flower.id}
+          className={`fixed ${flower.size} opacity-70 animate-float pointer-events-none`}
+          style={{
+            left: `${flower.left}%`,
+            top: "-50px",
+            animationDelay: `${flower.delay}s`,
+            animationDuration: `${flower.duration}s`,
+          }}
+        >
+          {flower.emoji}
+        </div>
+      ))}
+
+      {/* Music Controls */}
+      <div className="fixed top-8 right-8 z-50 flex flex-col gap-3">
+        <button
+          onClick={toggleMusic}
+          className="bg-wedding-red/80 hover:bg-wedding-red text-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+          aria-label="Phát/Tạm dừng nhạc"
+        >
+          <Music className={`w-6 h-6 ${isPlaying ? "animate-pulse" : ""}`} />
+        </button>
+        <button
+          onClick={stopMusic}
+          className="bg-muted/70 hover:bg-muted text-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+          aria-label="Dừng nhạc"
+        >
+          <StopCircle className="w-6 h-6" />
+        </button>
       </div>
 
-      {/* Nút bật/tắt nhạc */}
-      <button
-        onClick={toggleAudio}
-        className="absolute bottom-8 right-8 bg-white/20 hover:bg-white/40 p-3 rounded-full text-white transition"
-        title={isPlaying ? "Tạm dừng nhạc" : "Phát nhạc"}
-      >
-        {isPlaying ? <Pause size={28} /> : <Play size={28} />}
-      </button>
+      {/* Main Content */}
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-12">
+        {/* Decorative Hearts */}
+        <div className="absolute top-20 left-20 text-wedding-pink text-6xl opacity-30 animate-ping-slow">
+          ❤️
+        </div>
+        <div className="absolute bottom-20 right-20 text-wedding-gold text-6xl opacity-30 animate-ping-slow">
+          💕
+        </div>
 
-      {/* Icon trái tim bay */}
-      <Heart
-        className="absolute top-10 left-1/2 -translate-x-1/2 text-pink-400 animate-bounce"
-        size={48}
-      />
+        {/* Invitation Card */}
+        <div className="max-w-4xl w-full bg-gradient-to-br from-rose-50/95 via-pink-50/95 to-amber-50/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 animate-fade-in border-4 border-wedding-gold/30">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="font-display text-wedding-red text-5xl md:text-7xl font-bold mb-4 animate-slide-up">
+              Thiệp Mời Đám Cưới
+            </h1>
+            <div className="flex items-center justify-center gap-2 text-wedding-gold text-xl">
+              <Heart className="w-6 h-6 fill-current animate-pulse" />
+              <span className="font-script">Trăm năm hạnh phúc</span>
+              <Heart className="w-6 h-6 fill-current animate-pulse" />
+            </div>
+          </div>
+
+          {/* Decorative Line */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-wedding-gold to-transparent flex-1" />
+            <span className="text-3xl">🌹</span>
+            <div className="h-px bg-gradient-to-r from-transparent via-wedding-gold to-transparent flex-1" />
+          </div>
+
+          {/* Couple Photo */}
+          <div className="flex justify-center mb-8 relative">
+            {/* Decorative Flowers Around Photo */}
+            <div className="absolute -top-8 -left-8 text-5xl animate-float opacity-80">🌸</div>
+            <div className="absolute -top-10 left-1/4 text-4xl animate-float-slow opacity-80">🌺</div>
+            <div className="absolute -top-6 right-1/4 text-5xl animate-float opacity-80">🌹</div>
+            <div className="absolute -top-8 -right-8 text-4xl animate-float-slow opacity-80">🌷</div>
+
+            <div className="absolute top-1/4 -left-12 text-6xl animate-float-slow opacity-80">🌻</div>
+            <div className="absolute top-1/4 -right-12 text-5xl animate-float opacity-80">🌼</div>
+
+            <div className="absolute -bottom-6 -left-8 text-5xl animate-float opacity-80">💐</div>
+            <div className="absolute -bottom-8 left-1/4 text-4xl animate-float-slow opacity-80">🌸</div>
+            <div className="absolute -bottom-6 right-1/4 text-5xl animate-float opacity-80">🌺</div>
+            <div className="absolute -bottom-8 -right-8 text-4xl animate-float-slow opacity-80">🌹</div>
+
+            {/* Additional decorative leaves */}
+            <div className="absolute top-1/3 -left-16 text-4xl animate-float-slow opacity-60">🍃</div>
+            <div className="absolute top-1/3 -right-16 text-4xl animate-float opacity-60">🌿</div>
+            <div className="absolute bottom-1/3 -left-14 text-3xl animate-float opacity-60">🍃</div>
+            <div className="absolute bottom-1/3 -right-14 text-3xl animate-float-slow opacity-60">🌿</div>
+
+            <div className="relative group z-10">
+              <div className="absolute -inset-4 bg-gradient-to-r from-wedding-red via-wedding-pink to-wedding-gold rounded-full opacity-75 blur-xl group-hover:opacity-100 transition duration-500" />
+              <div className="relative bg-white p-2 rounded-full shadow-2xl">
+                <img
+                  src={couplePhoto}
+                  alt="Hoài Bình & Hữu Nghĩa"
+                  className="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Names */}
+          <div className="text-center mb-8">
+            <div className="font-display text-4xl md:text-5xl font-bold mb-4">
+              <span className="text-wedding-pink">Hoài Bình</span>
+              <span className="text-wedding-gold mx-4">❤️</span>
+              <span className="text-wedding-red">Hữu Nghĩa</span>
+            </div>
+            <p className="font-serif text-xl text-gray-700 italic">
+              Hân hạnh được đón tiếp
+            </p>
+          </div>
+
+          {/* Decorative Line */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-wedding-pink to-transparent flex-1" />
+            <span className="text-3xl">💐</span>
+            <div className="h-px bg-gradient-to-r from-transparent via-wedding-pink to-transparent flex-1" />
+          </div>
+
+          {/* Event Details */}
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-wedding-rose/30 to-wedding-pink/20 rounded-2xl p-6 border-2 border-wedding-pink/30">
+              <div className="flex items-center gap-3 mb-3">
+                <Calendar className="w-6 h-6 text-wedding-red" />
+                <h3 className="font-display text-2xl font-semibold text-wedding-red">
+                  Thời Gian
+                </h3>
+              </div>
+              <p className="font-serif text-lg text-gray-700">
+                <span className="font-semibold">...</span>
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-wedding-rose/30 to-wedding-gold/20 rounded-2xl p-6 border-2 border-wedding-gold/30">
+              <div className="flex items-center gap-3 mb-3">
+                <MapPin className="w-6 h-6 text-wedding-red" />
+                <h3 className="font-display text-2xl font-semibold text-wedding-red">
+                  Địa Điểm
+                </h3>
+              </div>
+              <p className="font-serif text-lg text-gray-700">
+                <span className="font-semibold">...</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Message */}
+          <div className="text-center">
+            <p className="font-script text-2xl md:text-3xl text-wedding-red mb-4">
+              Sự hiện diện của quý khách là niềm vinh hạnh cho gia đình chúng tôi
+            </p>
+            <div className="flex justify-center gap-2 text-3xl">
+              <span className="animate-float">🌸</span>
+              <span className="animate-float-slow">💝</span>
+              <span className="animate-float">🌸</span>
+            </div>
+          </div>
+
+          {/* Footer Decorations */}
+          <div className="mt-8 flex justify-center gap-3 text-2xl">
+            {["🎊", "🎉", "✨", "🎊", "🎉"].map((emoji, i) => (
+              <span
+                key={i}
+                className="animate-sparkle"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              >
+                {emoji}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Hearts Animation */}
+        <div className="mt-8 flex gap-4 text-4xl">
+          <span className="animate-float text-wedding-pink">💕</span>
+          <span className="animate-float-slow text-wedding-red">❤️</span>
+          <span className="animate-float text-wedding-gold">💛</span>
+        </div>
+      </div>
     </div>
   );
 };

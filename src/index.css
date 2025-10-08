@@ -8,35 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 355 25% 8%;
+    --foreground: 45 100% 98%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 355 25% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 355 25% 8%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 72% 51%;
+    --primary-foreground: 45 100% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 45 100% 65%;
+    --secondary-foreground: 355 25% 8%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 355 15% 20%;
+    --muted-foreground: 45 30% 80%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 330 81% 60%;
+    --accent-foreground: 45 100% 98%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 45 100% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 355 20% 25%;
+    --input: 355 20% 25%;
+    --ring: 0 72% 51%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+    
+    --wedding-gold: 45 100% 65%;
+    --wedding-red: 0 72% 51%;
+    --wedding-pink: 330 81% 60%;
+    --wedding-rose: 350 90% 88%;
+    
+    --gradient-romantic: linear-gradient(135deg, hsl(var(--wedding-red)) 0%, hsl(var(--wedding-pink)) 50%, hsl(var(--wedding-gold)) 100%);
+    --gradient-overlay: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%);
+    
+    --shadow-glow: 0 0 40px hsl(var(--wedding-gold) / 0.4);
+    --shadow-elegant: 0 10px 40px -10px hsl(var(--wedding-red) / 0.5);
+    
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 

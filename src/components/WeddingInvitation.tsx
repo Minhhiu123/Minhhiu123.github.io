@@ -116,8 +116,28 @@ const WeddingInvitation = () => {
           </div>
 
           {/* Couple Photo */}
-          <div className="flex justify-center mb-8">
-            <div className="relative group">
+          <div className="flex justify-center mb-8 relative">
+            {/* Decorative Flowers Around Photo */}
+            <div className="absolute -top-8 -left-8 text-5xl animate-float opacity-80">🌸</div>
+            <div className="absolute -top-10 left-1/4 text-4xl animate-float-slow opacity-80">🌺</div>
+            <div className="absolute -top-6 right-1/4 text-5xl animate-float opacity-80">🌹</div>
+            <div className="absolute -top-8 -right-8 text-4xl animate-float-slow opacity-80">🌷</div>
+            
+            <div className="absolute top-1/4 -left-12 text-6xl animate-float-slow opacity-80">🌻</div>
+            <div className="absolute top-1/4 -right-12 text-5xl animate-float opacity-80">🌼</div>
+            
+            <div className="absolute -bottom-6 -left-8 text-5xl animate-float opacity-80">💐</div>
+            <div className="absolute -bottom-8 left-1/4 text-4xl animate-float-slow opacity-80">🌸</div>
+            <div className="absolute -bottom-6 right-1/4 text-5xl animate-float opacity-80">🌺</div>
+            <div className="absolute -bottom-8 -right-8 text-4xl animate-float-slow opacity-80">🌹</div>
+            
+            {/* Additional decorative leaves */}
+            <div className="absolute top-1/3 -left-16 text-4xl animate-float-slow opacity-60">🍃</div>
+            <div className="absolute top-1/3 -right-16 text-4xl animate-float opacity-60">🌿</div>
+            <div className="absolute bottom-1/3 -left-14 text-3xl animate-float opacity-60">🍃</div>
+            <div className="absolute bottom-1/3 -right-14 text-3xl animate-float-slow opacity-60">🌿</div>
+            
+            <div className="relative group z-10">
               <div className="absolute -inset-4 bg-gradient-to-r from-wedding-red via-wedding-pink to-wedding-gold rounded-full opacity-75 blur-xl group-hover:opacity-100 transition duration-500" />
               <div className="relative bg-white p-2 rounded-full shadow-2xl">
                 <img

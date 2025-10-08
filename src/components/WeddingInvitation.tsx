@@ -6,7 +6,7 @@ import { Heart, Music, Calendar, MapPin } from "lucide-react";
 const WeddingInvitation = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio] = useState(
-    () => new Audio("https://cdn.pixabay.com/audio/2024/03/07/audio_27e04a3c93.mp3")
+    () => new Audio("https://cdn.pixabay.com/download/audio/2022/03/10/audio_2c4ba2cc4c.mp3")
   );
 
   useEffect(() => {
@@ -25,12 +25,13 @@ const WeddingInvitation = () => {
     setIsPlaying(!isPlaying);
   };
 
-  const flowers = Array.from({ length: 20 }, (_, i) => ({
+  const flowers = Array.from({ length: 50 }, (_, i) => ({
     id: i,
-    emoji: i % 4 === 0 ? "🌸" : i % 4 === 1 ? "🌺" : i % 4 === 2 ? "🌹" : "🌼",
-    delay: i * 0.3,
-    duration: 6 + (i % 3) * 2,
-    left: (i * 5) % 100,
+    emoji: i % 8 === 0 ? "🌸" : i % 8 === 1 ? "🌺" : i % 8 === 2 ? "🌹" : i % 8 === 3 ? "🌼" : i % 8 === 4 ? "🌷" : i % 8 === 5 ? "🌻" : i % 8 === 6 ? "🍃" : "🌿",
+    delay: i * 0.2,
+    duration: 8 + (i % 4) * 2,
+    left: (i * 2) % 100,
+    size: i % 3 === 0 ? "text-3xl" : i % 3 === 1 ? "text-4xl" : "text-5xl",
   }));
 
   return (
@@ -49,7 +50,7 @@ const WeddingInvitation = () => {
       {flowers.map((flower) => (
         <div
           key={flower.id}
-          className="fixed text-4xl opacity-70 animate-float pointer-events-none"
+          className={`fixed ${flower.size} opacity-70 animate-float pointer-events-none`}
           style={{
             left: `${flower.left}%`,
             top: "-50px",
@@ -81,7 +82,7 @@ const WeddingInvitation = () => {
         </div>
 
         {/* Invitation Card */}
-        <div className="max-w-4xl w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 animate-fade-in">
+        <div className="max-w-4xl w-full bg-gradient-to-br from-rose-50/95 via-pink-50/95 to-amber-50/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 animate-fade-in border-4 border-wedding-gold/30">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="font-display text-wedding-red text-5xl md:text-7xl font-bold mb-4 animate-slide-up">
@@ -144,9 +145,7 @@ const WeddingInvitation = () => {
                 </h3>
               </div>
               <p className="font-serif text-lg text-gray-700">
-                <span className="font-semibold">Chủ Nhật, 15 Tháng 12, 2024</span>
-                <br />
-                Lúc 10:00 sáng
+                <span className="font-semibold">...</span>
               </p>
             </div>
 
@@ -158,9 +157,7 @@ const WeddingInvitation = () => {
                 </h3>
               </div>
               <p className="font-serif text-lg text-gray-700">
-                <span className="font-semibold">Trung Tâm Tiệc Cưới</span>
-                <br />
-                123 Đường Hạnh Phúc, TP. HCM
+                <span className="font-semibold">...</span>
               </p>
             </div>
           </div>

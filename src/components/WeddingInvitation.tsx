@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import couplePhoto from "@/assets/couple-photo.png";
 import fireworksBg from "@/assets/fireworks-bg.jpg";
-import { Heart, Music, Calendar, MapPin } from "lucide-react";
+import { Heart, Music, Calendar, MapPin, StopCircle } from "lucide-react";
 
 const WeddingInvitation = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(
-    () => new Audio("https://cdn.pixabay.com/download/audio/2022/03/10/audio_2c4ba2cc4c.mp3")
-  );
+  const [audio] = useState(() => new Audio("/audio/wedding.mp3"));
 
   useEffect(() => {
     audio.loop = true;
@@ -23,6 +21,12 @@ const WeddingInvitation = () => {
       audio.play();
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const stopMusic = () => {
+    audio.pause();
+    audio.currentTime = 0;
+    setIsPlaying(false);
   };
 
   const flowers = Array.from({ length: 50 }, (_, i) => ({
@@ -62,14 +66,23 @@ const WeddingInvitation = () => {
         </div>
       ))}
 
-      {/* Music Control */}
-      <button
-        onClick={toggleMusic}
-        className="fixed top-8 right-8 z-50 bg-wedding-red/80 hover:bg-wedding-red text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
-        aria-label="Toggle music"
-      >
-        <Music className={`w-6 h-6 ${isPlaying ? "animate-pulse" : ""}`} />
-      </button>
+      {/* Music Controls */}
+      <div className="fixed top-8 right-8 z-50 flex flex-col gap-3">
+        <button
+          onClick={toggleMusic}
+          className="bg-wedding-red/80 hover:bg-wedding-red text-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+          aria-label="Phát/Tạm dừng nhạc"
+        >
+          <Music className={`w-6 h-6 ${isPlaying ? "animate-pulse" : ""}`} />
+        </button>
+        <button
+          onClick={stopMusic}
+          className="bg-muted/70 hover:bg-muted text-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+          aria-label="Dừng nhạc"
+        >
+          <StopCircle className="w-6 h-6" />
+        </button>
+      </div>
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-12">

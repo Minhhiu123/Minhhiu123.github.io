@@ -3,6 +3,7 @@ import couplePhoto from "@/assets/couple-photo.png";
 import fireworksBg from "@/assets/fireworks-bg.jpg";
 import { Heart, Music, Calendar, MapPin, StopCircle } from "lucide-react";
 
+
 const WeddingInvitation = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [audio] = useState(() => new Audio("/audio/wedding.mp3"));
@@ -10,18 +11,18 @@ const WeddingInvitation = () => {
   useEffect(() => {
     audio.loop = true;
 
-    // ✅ Cố gắng tự động phát nhạc khi trang load
+    // ✅ Tự động phát nhạc khi load trang
     const tryPlay = async () => {
       try {
         await audio.play();
         console.log("🎵 Nhạc tự bật thành công!");
       } catch (err) {
-        console.log("⚠️ Trình duyệt chặn autoplay, sẽ bật khi user click.");
+        console.log("⚠️ Trình duyệt chặn autoplay, chờ user click...");
       }
     };
     tryPlay();
 
-    // ✅ Nếu bị chặn, bật khi user click lần đầu
+    // ✅ Nếu bị chặn, bật nhạc khi user click lần đầu
     const handleFirstInteraction = () => {
       audio.play().catch(() => {});
       document.removeEventListener("click", handleFirstInteraction);
@@ -34,12 +35,11 @@ const WeddingInvitation = () => {
     };
   }, [audio]);
 
-
   const toggleMusic = () => {
     if (isPlaying) {
       audio.pause();
     } else {
-      audio.play();
+      audio.play().catch(() => {});
     }
     setIsPlaying(!isPlaying);
   };
@@ -52,11 +52,31 @@ const WeddingInvitation = () => {
 
   const flowers = Array.from({ length: 50 }, (_, i) => ({
     id: i,
-    emoji: i % 8 === 0 ? "🌸" : i % 8 === 1 ? "🌺" : i % 8 === 2 ? "🌹" : i % 8 === 3 ? "🌼" : i % 8 === 4 ? "🌷" : i % 8 === 5 ? "🌻" : i % 8 === 6 ? "🍃" : "🌿",
+    emoji:
+      i % 8 === 0
+        ? "🌸"
+        : i % 8 === 1
+        ? "🌺"
+        : i % 8 === 2
+        ? "🌹"
+        : i % 8 === 3
+        ? "🌼"
+        : i % 8 === 4
+        ? "🌷"
+        : i % 8 === 5
+        ? "🌻"
+        : i % 8 === 6
+        ? "🍃"
+        : "🌿",
     delay: i * 0.2,
     duration: 8 + (i % 4) * 2,
     left: (i * 2) % 100,
-    size: i % 3 === 0 ? "text-3xl" : i % 3 === 1 ? "text-4xl" : "text-5xl",
+    size:
+      i % 3 === 0
+        ? "text-3xl"
+        : i % 3 === 1
+        ? "text-4xl"
+        : "text-5xl",
   }));
 
   return (
@@ -129,35 +149,8 @@ const WeddingInvitation = () => {
             </div>
           </div>
 
-          {/* Decorative Line */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="h-px bg-gradient-to-r from-transparent via-wedding-gold to-transparent flex-1" />
-            <span className="text-3xl">🌹</span>
-            <div className="h-px bg-gradient-to-r from-transparent via-wedding-gold to-transparent flex-1" />
-          </div>
-
           {/* Couple Photo */}
           <div className="flex justify-center mb-8 relative">
-            {/* Decorative Flowers Around Photo */}
-            <div className="absolute -top-8 -left-8 text-5xl animate-float opacity-80">🌸</div>
-            <div className="absolute -top-10 left-1/4 text-4xl animate-float-slow opacity-80">🌺</div>
-            <div className="absolute -top-6 right-1/4 text-5xl animate-float opacity-80">🌹</div>
-            <div className="absolute -top-8 -right-8 text-4xl animate-float-slow opacity-80">🌷</div>
-            
-            <div className="absolute top-1/4 -left-12 text-6xl animate-float-slow opacity-80">🌻</div>
-            <div className="absolute top-1/4 -right-12 text-5xl animate-float opacity-80">🌼</div>
-            
-            <div className="absolute -bottom-6 -left-8 text-5xl animate-float opacity-80">💐</div>
-            <div className="absolute -bottom-8 left-1/4 text-4xl animate-float-slow opacity-80">🌸</div>
-            <div className="absolute -bottom-6 right-1/4 text-5xl animate-float opacity-80">🌺</div>
-            <div className="absolute -bottom-8 -right-8 text-4xl animate-float-slow opacity-80">🌹</div>
-            
-            {/* Additional decorative leaves */}
-            <div className="absolute top-1/3 -left-16 text-4xl animate-float-slow opacity-60">🍃</div>
-            <div className="absolute top-1/3 -right-16 text-4xl animate-float opacity-60">🌿</div>
-            <div className="absolute bottom-1/3 -left-14 text-3xl animate-float opacity-60">🍃</div>
-            <div className="absolute bottom-1/3 -right-14 text-3xl animate-float-slow opacity-60">🌿</div>
-            
             <div className="relative group z-10">
               <div className="absolute -inset-4 bg-gradient-to-r from-wedding-red via-wedding-pink to-wedding-gold rounded-full opacity-75 blur-xl group-hover:opacity-100 transition duration-500" />
               <div className="relative bg-white p-2 rounded-full shadow-2xl">
@@ -180,13 +173,6 @@ const WeddingInvitation = () => {
             <p className="font-serif text-xl text-gray-700 italic">
               Hân hạnh được đón tiếp
             </p>
-          </div>
-
-          {/* Decorative Line */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="h-px bg-gradient-to-r from-transparent via-wedding-pink to-transparent flex-1" />
-            <span className="text-3xl">💐</span>
-            <div className="h-px bg-gradient-to-r from-transparent via-wedding-pink to-transparent flex-1" />
           </div>
 
           {/* Event Details */}
@@ -226,19 +212,6 @@ const WeddingInvitation = () => {
               <span className="animate-float-slow">💝</span>
               <span className="animate-float">🌸</span>
             </div>
-          </div>
-
-          {/* Footer Decorations */}
-          <div className="mt-8 flex justify-center gap-3 text-2xl">
-            {["🎊", "🎉", "✨", "🎊", "🎉"].map((emoji, i) => (
-              <span
-                key={i}
-                className="animate-sparkle"
-                style={{ animationDelay: `${i * 0.2}s` }}
-              >
-                {emoji}
-              </span>
-            ))}
           </div>
         </div>
 

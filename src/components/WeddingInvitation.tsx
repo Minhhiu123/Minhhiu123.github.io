@@ -4,7 +4,7 @@ import fireworksBg from "@/assets/fireworks-bg.jpg";
 import { Heart, Music, Calendar, MapPin, StopCircle } from "lucide-react";
 
 const WeddingInvitation = () => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [audio] = useState(() => new Audio("/audio/wedding.mp3"));
 
   useEffect(() => {
